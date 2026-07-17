@@ -1,0 +1,25 @@
+SnowyOwl GraphicsFramework Repository Licensing
+
+This repository contains multiple Unity packages with separate licenses.
+
+SnowyOwl GraphicsFramework
+Path: Packages/com.snowyowl.graphicsframework
+License: MIT License
+License file: Packages/com.snowyowl.graphicsframework/LICENSE
+Copyright (c) 2025 SnowyLake
+
+Scriptable Render Pipeline Core
+Path: Packages/com.unity.render-pipelines.core
+License: Unity Companion License
+License file: Packages/com.unity.render-pipelines.core/LICENSE.md
+Copyright (c) 2020 Unity Technologies ApS
+
+Universal Render Pipeline
+Path: Packages/com.unity.render-pipelines.universal
+License: Unity Companion License
+License file: Packages/com.unity.render-pipelines.universal/LICENSE.md
+Copyright (c) 2020 Unity Technologies ApS
+
+Each package and its contents are governed by the license identified above.
+This repository-level file does not replace or override the package-specific
+license terms.

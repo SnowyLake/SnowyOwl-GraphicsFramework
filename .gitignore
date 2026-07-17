@@ -1,0 +1,26 @@
+# Unity generated directories
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Ll]ogs/
+[Uu]serSettings/
+[Bb]uild/
+[Bb]uilds/
+
+# IDE generated files
+.idea/
+.vs/
+.vscode/
+*.csproj
+*.sln
+*.suo
+*.user
+*.userprefs
+
+# Operating system files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Agent session files
+.agent-sessions/

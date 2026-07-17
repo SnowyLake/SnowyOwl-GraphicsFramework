@@ -1,0 +1,33 @@
+{
+    "name": "SnowyOwl.GraphicsFramework.Editor",
+    "rootNamespace": "",
+    "references": [
+        "SnowyOwl.GraphicsFramework",
+        "UnityEngine.UI",
+        "UnityEditor.UI",
+        "Unity.RenderPipelines.Core.Runtime",
+        "Unity.RenderPipelines.Core.Editor",
+        "Unity.RenderPipelines.Universal.Runtime",
+        "Unity.RenderPipelines.Universal.Editor",
+        "Unity.ScriptableBuildPipeline",
+        "Unity.ScriptableBuildPipeline.Editor",
+        "Needle.ShaderGraphMarkdown"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.scriptablebuildpipeline",
+            "expression": "0.0.0",
+            "define": "SBP_INCLUDE"
+        }
+    ],
+    "noEngineReferences": false
+}

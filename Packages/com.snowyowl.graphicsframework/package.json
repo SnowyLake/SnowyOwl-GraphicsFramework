@@ -1,0 +1,20 @@
+{
+  "name": "com.snowyowl.graphicsframework",
+  "description": "A high-quality unity graphics framework for the next-generation mobile devices, based on the URP, developed by SnowyLake.",
+  "version": "1.0.0",
+  "unity": "2022.3",
+  "displayName": "SnwoyOwl GraphicsFramework",
+  "dependencies": 
+  {
+    "com.unity.render-pipelines.core": "14.0.12",
+    "com.unity.render-pipelines.universal": "14.0.12"
+  },
+  "keywords": [
+    "graphics",
+    "performance",
+    "rendering",
+    "mobile",
+    "render",
+    "pipeline"
+  ]
+}

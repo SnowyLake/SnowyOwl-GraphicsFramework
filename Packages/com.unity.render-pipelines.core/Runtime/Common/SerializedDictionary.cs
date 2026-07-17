@@ -109,6 +109,9 @@ namespace UnityEngine.Rendering
         /// </summary>
         public void OnAfterDeserialize()
         {
+            // SnowyOwl Modified
+            Clear();
+            
             for (int i = 0; i < m_Keys.Count; i++)
                 Add(DeserializeKey(m_Keys[i]), DeserializeValue(m_Values[i]));
 

@@ -143,7 +143,7 @@ void SampleShadow_ComputeSamples_Tent_3x3(real4 shadowMapTexture_TexelSize, real
 void SampleShadow_ComputeSamples_Tent_5x5(real4 shadowMapTexture_TexelSize, real2 coord, out real fetchesWeights[9], out real2 fetchesUV[9])
 {
     // tent base is 5x5 base thus covering from 25 to 36 texels, thus we need 9 bilinear PCF fetches
-    real2 tentCenterInTexelSpace = coord.xy * shadowMapTexture_TexelSize.zw;
+    float2 tentCenterInTexelSpace = coord.xy * shadowMapTexture_TexelSize.zw;
     real2 centerOfFetchesInTexelSpace = floor(tentCenterInTexelSpace + 0.5);
     real2 offsetFromTentCenterToCenterOfFetches = tentCenterInTexelSpace - centerOfFetchesInTexelSpace;
 
@@ -163,7 +163,7 @@ void SampleShadow_ComputeSamples_Tent_5x5(real4 shadowMapTexture_TexelSize, real
     fetchesOffsetsU *= shadowMapTexture_TexelSize.xxx;
     fetchesOffsetsV *= shadowMapTexture_TexelSize.yyy;
 
-    real2 bilinearFetchOrigin = centerOfFetchesInTexelSpace * shadowMapTexture_TexelSize.xy;
+    float2 bilinearFetchOrigin = centerOfFetchesInTexelSpace * shadowMapTexture_TexelSize.xy;
     fetchesUV[0] = bilinearFetchOrigin + real2(fetchesOffsetsU.x, fetchesOffsetsV.x);
     fetchesUV[1] = bilinearFetchOrigin + real2(fetchesOffsetsU.y, fetchesOffsetsV.x);
     fetchesUV[2] = bilinearFetchOrigin + real2(fetchesOffsetsU.z, fetchesOffsetsV.x);
@@ -189,7 +189,7 @@ void SampleShadow_ComputeSamples_Tent_5x5(real4 shadowMapTexture_TexelSize, real
 void SampleShadow_ComputeSamples_Tent_7x7(real4 shadowMapTexture_TexelSize, real2 coord, out real fetchesWeights[16], out real2 fetchesUV[16])
 {
     // tent base is 7x7 base thus covering from 49 to 64 texels, thus we need 16 bilinear PCF fetches
-    real2 tentCenterInTexelSpace = coord.xy * shadowMapTexture_TexelSize.zw;
+    float2 tentCenterInTexelSpace = coord.xy * shadowMapTexture_TexelSize.zw;
     real2 centerOfFetchesInTexelSpace = floor(tentCenterInTexelSpace + 0.5);
     real2 offsetFromTentCenterToCenterOfFetches = tentCenterInTexelSpace - centerOfFetchesInTexelSpace;
 
@@ -209,7 +209,7 @@ void SampleShadow_ComputeSamples_Tent_7x7(real4 shadowMapTexture_TexelSize, real
     fetchesOffsetsU *= shadowMapTexture_TexelSize.xxxx;
     fetchesOffsetsV *= shadowMapTexture_TexelSize.yyyy;
 
-    real2 bilinearFetchOrigin = centerOfFetchesInTexelSpace * shadowMapTexture_TexelSize.xy;
+    float2 bilinearFetchOrigin = centerOfFetchesInTexelSpace * shadowMapTexture_TexelSize.xy;
     fetchesUV[0]  = bilinearFetchOrigin + real2(fetchesOffsetsU.x, fetchesOffsetsV.x);
     fetchesUV[1]  = bilinearFetchOrigin + real2(fetchesOffsetsU.y, fetchesOffsetsV.x);
     fetchesUV[2]  = bilinearFetchOrigin + real2(fetchesOffsetsU.z, fetchesOffsetsV.x);

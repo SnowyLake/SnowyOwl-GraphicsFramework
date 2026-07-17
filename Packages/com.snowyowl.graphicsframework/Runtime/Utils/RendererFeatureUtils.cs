@@ -81,7 +81,7 @@ namespace SnowyOwl.GraphicsFramework
         public static T GetRendererFeature<T>(int rendererIndex = 0) where T : ScriptableRendererFeature
         {
             var urpAsset = CoreUtils.GetURPAsset();
-            var rendererData = urpAsset?.rendererDatas[rendererIndex];
+            var rendererData = urpAsset?.RendererDatas[rendererIndex];
             if (rendererData)
             {
                 foreach (var feature in rendererData.rendererFeatures)

@@ -49,7 +49,7 @@ namespace SnowyOwl.GraphicsFramework
             var urpAsset = GetURPAsset();
             if (urpAsset)
             {
-                return urpAsset.rendererDatas[index] as UniversalRendererData;
+                return urpAsset.RendererDatas[index] as UniversalRendererData;
             }
 
             return null;

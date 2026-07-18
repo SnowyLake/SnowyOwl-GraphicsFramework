@@ -1320,22 +1320,25 @@ namespace UnityEngine.Rendering.Universal
             // XRTODO: remove once we have visible area of occlusion mesh available
             if (cameraClearFlags == CameraClearFlags.Skybox && RenderSettings.skybox != null && cameraData.postProcessEnabled && cameraData.xr.enabled)
                 return ClearFlag.All;
-
-            if ((cameraClearFlags == CameraClearFlags.Skybox && RenderSettings.skybox != null) ||
-                cameraClearFlags == CameraClearFlags.Nothing)
-            {
-                // Clear color if msaa is used. If color is not cleared will alpha to coverage blend with previous frame if alpha clipping is enabled of any opaque objects.
-                if (cameraData.cameraTargetDescriptor.msaaSamples > 1)
-                {
-                    // Sets the clear color to black to make the alpha to coverage blending blend with black when using alpha clipping.
-                    cameraData.camera.backgroundColor = Color.black;
-                    return ClearFlag.DepthStencil | ClearFlag.Color;
-                }
-                else
-                {
-                    return ClearFlag.DepthStencil;
-                }
-            }
+            
+            // SnowyOwl Modified: Always clear the camera color target because loading an uncleared attachment
+            // could expose undefined tile memory as screen corruption on some mobile tile-based GPUs.
+            
+            // if ((cameraClearFlags == CameraClearFlags.Skybox && RenderSettings.skybox != null) ||
+            //     cameraClearFlags == CameraClearFlags.Nothing)
+            // {
+            //     // Clear color if msaa is used. If color is not cleared will alpha to coverage blend with previous frame if alpha clipping is enabled of any opaque objects.
+            //     if (cameraData.cameraTargetDescriptor.msaaSamples > 1)
+            //     {
+            //         // Sets the clear color to black to make the alpha to coverage blending blend with black when using alpha clipping.
+            //         cameraData.camera.backgroundColor = Color.black;
+            //         return ClearFlag.DepthStencil | ClearFlag.Color;
+            //     }
+            //     else
+            //     {
+            //         return ClearFlag.DepthStencil;
+            //     }
+            // }
 
             return ClearFlag.All;
         }

@@ -31,17 +31,12 @@ namespace SnowyOwl.GraphicsFramework
             return UniversalRenderPipeline.asset;
         }
         
+        /// <summary>
+        /// Get the preloaded SnowyOwl global graphics settings.
+        /// </summary>
         public static SwyoGlobalGraphicsSettings GetGlobalSettings()
         {
-            var globalSettings = UniversalRenderPipelineGlobalSettings.instance;
-            if (globalSettings)
-            {
-                if (globalSettings.SnowyOwlGlobalSettings)
-                {
-                    return globalSettings.SnowyOwlGlobalSettings as SwyoGlobalGraphicsSettings;
-                }
-            }
-            return null;
+            return SwyoGlobalGraphicsSettings.Instance;
         }
         
         public static UniversalRendererData GetRendererData(int index = 0)

@@ -32,11 +32,11 @@ namespace SnowyOwl.GraphicsFramework
         }
         
         /// <summary>
-        /// Get the preloaded SnowyOwl global graphics settings.
+        /// Get the preloaded SnowyOwl global settings.
         /// </summary>
-        public static SwyoGlobalGraphicsSettings GetGlobalSettings()
+        public static SwyoGlobalSettings GetGlobalSettings()
         {
-            return SwyoGlobalGraphicsSettings.Instance;
+            return SwyoGlobalSettings.Instance;
         }
         
         public static UniversalRendererData GetRendererData(int index = 0)

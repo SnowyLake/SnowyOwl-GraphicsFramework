@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace SnowyOwl.GraphicsFramework
 {
-    internal static class SwyoGlobalGraphicsSettingsProvider
+    internal static class SwyoGlobalSettingsProvider
     {
         private static UnityEditor.Editor s_SettingsEditor;
 
@@ -38,7 +38,7 @@ namespace SnowyOwl.GraphicsFramework
                         var settings = GetPreloadedSettings();
 
                         EditorGUI.BeginChangeCheck();
-                        settings = (SwyoGlobalGraphicsSettings)EditorGUILayout.ObjectField("Settings", settings, typeof(SwyoGlobalGraphicsSettings), false);
+                        settings = (SwyoGlobalSettings)EditorGUILayout.ObjectField("Settings", settings, typeof(SwyoGlobalSettings), false);
                         if (EditorGUI.EndChangeCheck())
                         {
                             SetPreloadedSettings(settings);
@@ -70,17 +70,17 @@ namespace SnowyOwl.GraphicsFramework
         /// <summary>
         /// Get the first SnowyOwl settings asset registered for preloading.
         /// </summary>
-        private static SwyoGlobalGraphicsSettings GetPreloadedSettings()
+        private static SwyoGlobalSettings GetPreloadedSettings()
         {
-            return PlayerSettings.GetPreloadedAssets().OfType<SwyoGlobalGraphicsSettings>().FirstOrDefault();
+            return PlayerSettings.GetPreloadedAssets().OfType<SwyoGlobalSettings>().FirstOrDefault();
         }
 
         /// <summary>
         /// Replace all preloaded SnowyOwl settings assets while preserving other preloaded assets.
         /// </summary>
-        private static void SetPreloadedSettings(SwyoGlobalGraphicsSettings settings)
+        private static void SetPreloadedSettings(SwyoGlobalSettings settings)
         {
-            var preloadedAssets = PlayerSettings.GetPreloadedAssets().Where(asset => !(asset is SwyoGlobalGraphicsSettings)).ToList();
+            var preloadedAssets = PlayerSettings.GetPreloadedAssets().Where(asset => !(asset is SwyoGlobalSettings)).ToList();
             if (settings)
             {
                 preloadedAssets.Add(settings);
@@ -95,13 +95,13 @@ namespace SnowyOwl.GraphicsFramework
         /// </summary>
         private static void CreateSettingsAsset()
         {
-            var path = EditorUtility.SaveFilePanelInProject("Create SnowyOwl Graphics Settings", "SwyoGlobalGraphicsSettings", "asset", "Choose a location for the global graphics settings asset.");
+            var path = EditorUtility.SaveFilePanelInProject("Create SnowyOwl Global Settings", "SwyoGlobalSettings", "asset", "Choose a location for the global settings asset.");
             if (string.IsNullOrEmpty(path))
             {
                 return;
             }
 
-            var settings = ScriptableObject.CreateInstance<SwyoGlobalGraphicsSettings>();
+            var settings = ScriptableObject.CreateInstance<SwyoGlobalSettings>();
             AssetDatabase.CreateAsset(settings, path);
             SetPreloadedSettings(settings);
             Selection.activeObject = settings;

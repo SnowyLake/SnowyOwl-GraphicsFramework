@@ -13,15 +13,15 @@ using UnityEditor;
 namespace SnowyOwl.GraphicsFramework
 {
     [HideMonoScript]
-    [CreateAssetMenu(fileName = "SwyoGlobalGraphicsSettings.asset", menuName = CoreUtils.CreateAssetMenuPrefix + "SnowyOwl Global Graphics Settings", order = CoreUtils.EditorPriority.Core - 10)]
-    public class SwyoGlobalGraphicsSettings : ScriptableObject
+    [CreateAssetMenu(fileName = "SwyoGlobalSettings.asset", menuName = CoreUtils.CreateAssetMenuPrefix + "SnowyOwl Global Settings", order = CoreUtils.EditorPriority.Core - 10)]
+    public class SwyoGlobalSettings : ScriptableObject
     {
-        private static SwyoGlobalGraphicsSettings s_Instance;
+        private static SwyoGlobalSettings s_Instance;
 
         /// <summary>
         /// Get the settings asset selected in PlayerSettings or loaded for the Player.
         /// </summary>
-        public static SwyoGlobalGraphicsSettings Instance
+        public static SwyoGlobalSettings Instance
         {
             get
             {
@@ -120,7 +120,7 @@ namespace SnowyOwl.GraphicsFramework
             }
             else if (s_Instance != this && Application.isPlaying)
             {
-                Debug.LogError("Multiple SwyoGlobalGraphicsSettings assets are loaded. Only the first preloaded asset is used.", this);
+                Debug.LogError("Multiple SwyoGlobalSettings assets are loaded. Only the first preloaded asset is used.", this);
             }
         }
 
@@ -128,9 +128,9 @@ namespace SnowyOwl.GraphicsFramework
         /// <summary>
         /// Get the settings asset selected in PlayerSettings preloaded assets.
         /// </summary>
-        private static SwyoGlobalGraphicsSettings GetPreloadedSettings()
+        private static SwyoGlobalSettings GetPreloadedSettings()
         {
-            return PlayerSettings.GetPreloadedAssets().OfType<SwyoGlobalGraphicsSettings>().FirstOrDefault();
+            return PlayerSettings.GetPreloadedAssets().OfType<SwyoGlobalSettings>().FirstOrDefault();
         }
 #endif
 

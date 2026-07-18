@@ -105,7 +105,7 @@ namespace UnityEngine.Rendering.Universal
 
             if (data != null)
             {
-                m_ColorGradingLutPass = new ColorGradingLutPass(RenderPassEvent.BeforeRenderingPrePasses, data);
+                m_ColorGradingLutPass = new ColorGradingLutPass(RenderPassEvent.AfterRenderingPrePasses, data);
                 m_PostProcessPass = new PostProcessPass(RenderPassEvent.BeforeRenderingPostProcessing, data, ref ppParams);
                 m_FinalPostProcessPass = new PostProcessPass(RenderPassEvent.AfterRenderingPostProcessing, data, ref ppParams);
                 m_CurrentPostProcessData = data;

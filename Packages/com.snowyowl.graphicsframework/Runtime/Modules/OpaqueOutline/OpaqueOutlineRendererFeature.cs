@@ -44,8 +44,8 @@ namespace SnowyOwl.GraphicsFramework
                 return;
             }
             renderer.EnqueuePass(m_ColorPass);
-            
-            if ((renderer as UniversalRenderer)!.CopyDepthMode == CopyDepthMode.ForcePrepass)
+            var urpRenderer = (renderer as UniversalRenderer)!;
+            if (urpRenderer.CopyDepthMode == CopyDepthMode.ForcePrepass || urpRenderer.depthPrimingMode == DepthPrimingMode.Forced)
             {
                 renderer.EnqueuePass(m_DepthPass);
             }

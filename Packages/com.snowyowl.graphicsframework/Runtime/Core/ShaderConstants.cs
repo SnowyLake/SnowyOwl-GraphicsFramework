@@ -49,6 +49,7 @@ namespace SnowyOwl.GraphicsFramework
     public static class SwyoShaderKeywords
     {
         public const string MainLightShadows = "_MAIN_LIGHT_SHADOWS";
+        public const string DepthPrimingOn = "_DEPTH_PRIMING_ON";
         
         // Material Property LUT
         public const string PropertyLUTOn = "_PROPERTY_LUT_ON";

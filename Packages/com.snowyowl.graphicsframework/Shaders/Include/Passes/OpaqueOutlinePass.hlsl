@@ -46,7 +46,7 @@ half4 OpaqueOutlineFragment(OpaqueOutlineVaryings input) : SV_TARGET
     half4 finalColor = COLOR4_BLACK_ALPHA1;
     half4 baseColor = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, input.uv0) * _BaseColor;
 
-#if !defined(SWYO_DEPTH_PRIMING_ON) || !defined(_OPAQUE_OUTLINE_COLOR_PASS)
+#if !defined(_DEPTH_PRIMING_ON) || !defined(_OPAQUE_OUTLINE_COLOR_PASS)
     SwyoAlpha(baseColor.a, _Cutoff);
 #endif
     

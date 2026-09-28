@@ -4,7 +4,7 @@
 // -------------------------------------
 // Include
 #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
-#include "../Generated/GlobalShaderDefines.hlsl"
+#include "CommonIncludes.hlsl"
 
 // -------------------------------------
 // Global Variables

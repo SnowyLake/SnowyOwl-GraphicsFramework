@@ -164,6 +164,10 @@ Shader "SnowyOwl GraphicsFramework/Scene/Scene Lit Standard"
             Cull[_Cull]
 
             HLSLPROGRAM
+
+            // -------------------------------------
+            // SnowyOwl Defines
+            #define SWYO_PASS_GBUFFER
             
             // -------------------------------------
             // Material Keywords

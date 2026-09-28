@@ -1,15 +1,12 @@
 #pragma once
 
+#if defined(_DEPTH_PRIMING_ON) && !defined(_SURFACE_TYPE_TRANSPARENT) && !defined(SWYO_PASS_GBUFFER)
+    #define ALPHATEST_OFF
+#endif
+
 // -------------------------------------
 // Includes
 #include_with_pragmas "Packages/com.snowyowl.graphicsframework/Shaders/Include/Common/PassIncludes.hlsl"
-
-
-// -------------------------------------
-// Macros
-#if defined(SWYO_DEPTH_PRIMING_ON) && !defined(_SURFACE_TYPE_TRANSPARENT)
-    #define ALPHATEST_OFF
-#endif
 
 
 // -------------------------------------
@@ -192,13 +189,6 @@ half4 ForwardLitFragment(ForwardLitVaryings input) : SV_Target0
 // -------------------------------------
 // Gbuffer Includes
 #include "Packages/com.snowyowl.graphicsframework/Shaders/Include/Common/Deferred.hlsl"
-
-
-// -------------------------------------
-// Gbuffer Macros
-#if defined(ALPHATEST_OFF)
-    #undef ALPHATEST_OFF
-#endif
 
 
 // -------------------------------------

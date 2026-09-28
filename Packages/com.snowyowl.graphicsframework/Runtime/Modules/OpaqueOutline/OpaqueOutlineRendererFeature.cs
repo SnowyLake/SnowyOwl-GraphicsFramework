@@ -37,6 +37,9 @@ namespace SnowyOwl.GraphicsFramework
             m_DepthPass = new OpaqueOutlineRenderPass(settings, true);
         }
 
+        /// <summary>
+        /// Enqueue outline passes when the camera may need outline depth.
+        /// </summary>
         public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
         {
             if (!enable || !RendererFeatureUtils.CheckCameraType(renderingData.cameraData, settings.filter.cameraTypes))
@@ -45,7 +48,7 @@ namespace SnowyOwl.GraphicsFramework
             }
             renderer.EnqueuePass(m_ColorPass);
             var urpRenderer = (renderer as UniversalRenderer)!;
-            if (urpRenderer.CopyDepthMode == CopyDepthMode.ForcePrepass || urpRenderer.depthPrimingMode == DepthPrimingMode.Forced)
+            if (urpRenderer.CopyDepthMode == CopyDepthMode.ForcePrepass || urpRenderer.depthPrimingMode != DepthPrimingMode.Disabled)
             {
                 renderer.EnqueuePass(m_DepthPass);
             }
@@ -91,12 +94,21 @@ namespace SnowyOwl.GraphicsFramework
             renderPassEvent = isDepthPass ? settings.depthPassEvent : settings.passEvent;
         }
         
+        /// <summary>
+        /// Select the current camera's outline depth target when needed.
+        /// </summary>
         public override void OnCameraSetup(CommandBuffer cmd, ref RenderingData renderingData)
         {
             var renderer = (renderingData.cameraData.renderer as UniversalRenderer)!;
 
             if (m_IsDepthPass)
             {
+                if (!ShouldDrawDepthPass(renderer))
+                {
+                    ResetTarget();
+                    return;
+                }
+
                 if (renderer.useDepthPriming && (renderingData.cameraData.renderType == CameraRenderType.Base || renderingData.cameraData.clearDepth))
                 {
                     ConfigureTarget(renderer.cameraDepthTargetHandle);
@@ -108,8 +120,16 @@ namespace SnowyOwl.GraphicsFramework
             }
         }
         
+        /// <summary>
+        /// Draw the outline pass only when its current camera needs it.
+        /// </summary>
         public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
         {
+            if (m_IsDepthPass && !ShouldDrawDepthPass((UniversalRenderer)renderingData.cameraData.renderer))
+            {
+                return;
+            }
+
             var sortFlags = m_Settings.isOpaque ? renderingData.cameraData.defaultOpaqueSortFlags : SortingCriteria.CommonTransparent;
 
             if (!m_IsDepthPass)
@@ -148,6 +168,14 @@ namespace SnowyOwl.GraphicsFramework
             RenderingUtils.SetGlobalKeyword(cmd, SwyoShaderKeywords.OpaqueOutlineColorPass, !passData.isDepthPass);
             cmd.SetGlobalFloat(SwyoShaderPropertyId.OpaqueOutlineDistanceFadeFactor, passData.distanceFadeFactor);
             cmd.DrawRendererList(passData.rendererList);
+        }
+
+        /// <summary>
+        /// Return whether the current camera needs outline depth before its color pass.
+        /// </summary>
+        private static bool ShouldDrawDepthPass(UniversalRenderer renderer)
+        {
+            return renderer.useDepthPriming || renderer.CopyDepthMode == CopyDepthMode.ForcePrepass;
         }
 
         public override void OnCameraCleanup(CommandBuffer cmd)

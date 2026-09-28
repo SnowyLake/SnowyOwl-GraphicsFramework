@@ -105,7 +105,11 @@ namespace UnityEngine.Rendering.Universal
 
             if (data != null)
             {
+#if SNOWYOWL_INCLUDE
                 m_ColorGradingLutPass = new ColorGradingLutPass(RenderPassEvent.AfterRenderingPrePasses, data);
+#else
+                m_ColorGradingLutPass = new ColorGradingLutPass(RenderPassEvent.BeforeRenderingPrePasses, data);
+#endif
                 m_PostProcessPass = new PostProcessPass(RenderPassEvent.BeforeRenderingPostProcessing, data, ref ppParams);
                 m_FinalPostProcessPass = new PostProcessPass(RenderPassEvent.AfterRenderingPostProcessing, data, ref ppParams);
                 m_CurrentPostProcessData = data;

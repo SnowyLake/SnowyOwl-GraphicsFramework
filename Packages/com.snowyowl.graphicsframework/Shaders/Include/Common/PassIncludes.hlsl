@@ -1,6 +1,6 @@
 #pragma once
 
-#include_with_pragmas "Packages/com.snowyowl.graphicsframework/Shaders/Include/Generated/GlobalShaderDefines.hlsl"
+#include_with_pragmas "Packages/com.snowyowl.graphicsframework/Shaders/Include/Common/CommonIncludes.hlsl"
 
 // -------------------------------------
 // Macro Defines

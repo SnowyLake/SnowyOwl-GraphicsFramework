@@ -37,20 +37,10 @@ namespace SnowyOwl.GraphicsFramework
 
         // --------------------------------
         // Render Pipeline Setting
+        /// <summary>
+        /// Update the main renderer's depth priming mode.
+        /// </summary>
         [Title("Render Pipeline Setting")]
-        [PropertyOrder(0), OnInspectorGUI, EnableGUI]
-        public bool EnableShaderDebugSymbols
-        {
-            get => m_EnableShaderDebugSymbols;
-            set
-            {
-                m_EnableShaderDebugSymbols = value;
-                shaderDefineGenerator.SetShaderDefine(ShaderDefines.DebugSymbolsOn, m_EnableShaderDebugSymbols);
-            }
-        }
-        [SerializeField, HideInInspector]
-        private bool m_EnableShaderDebugSymbols;
-        
         [PropertyOrder(0), OnInspectorGUI, EnableGUI]
         public bool EnableDepthPriming
         {
@@ -64,7 +54,6 @@ namespace SnowyOwl.GraphicsFramework
                     mainRendererData.depthPrimingMode = m_EnableDepthPriming ? DepthPrimingMode.Forced : DepthPrimingMode.Disabled;
                     CoreUtils.SetDirty(mainRendererData);
                 }
-                shaderDefineGenerator.SetShaderDefine(ShaderDefines.DepthPrimingOn, value);
             }
         }
         [SerializeField, HideInInspector]
@@ -78,12 +67,6 @@ namespace SnowyOwl.GraphicsFramework
         public bool enableGraphicsQualityControl;
         
 
-        // --------------------------------
-        // Shader Define Generate
-        [PropertyOrder(2)]
-        public ShaderDefineGenerator shaderDefineGenerator;
-        
-        
         // --------------------------------
         // Assets Table
         [Title("Global Assets")]

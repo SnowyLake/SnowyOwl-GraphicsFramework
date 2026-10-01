@@ -6,34 +6,6 @@ using UnityEngine.Rendering;
 
 namespace SnowyOwl.GraphicsFramework
 {
-    public enum SwyoRenderQueueMode
-    {
-        Auto = 0,
-        Custom = 1,
-    }
-    public enum SwyoBlendMode
-    {
-        /// <summary>
-        /// Use this for alpha blend mode.
-        /// </summary>
-        Alpha,   // Old school alpha-blending mode, fresnel does not affect amount of transparency
-
-        /// <summary>
-        /// Use this for premultiply blend mode.
-        /// </summary>
-        Premultiply, // Physically plausible transparency mode, implemented as alpha pre-multiply
-
-        /// <summary>
-        /// Use this for additive blend mode.
-        /// </summary>
-        Additive,
-
-        /// <summary>
-        /// Use this for multiply blend mode.
-        /// </summary>
-        Multiply
-    }
-    
     public static class MaterialMeshUtils
     {
         // Material Functions

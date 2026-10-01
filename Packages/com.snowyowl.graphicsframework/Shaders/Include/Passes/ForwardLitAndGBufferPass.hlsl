@@ -134,7 +134,7 @@ half4 ForwardLitFragment(ForwardLitVaryings input) : SV_Target0
     #endif
 #endif
     
-#if defined(_SURFACE_TYPE_TRANSPARENT)
+#if defined(_SURFACE_TYPE_TRANSPARENT) && !defined(_ALPHAPREMULTIPLY_ON)
     UNITY_BRANCH
     if (surfaceData.alpha <= ZERO)
     {

@@ -12,9 +12,6 @@ CBUFFER_START(UnityPerMaterial)
     // Colors
     half4 _BaseColor;
     half4 _EmissionColor;
-    // half4 _OverlayCubeMap_HDR;
-    // half4 _OverlayCubeMapTintColor;
-
     // AlphaTest
     half _Cutoff;
 
@@ -29,11 +26,6 @@ CBUFFER_START(UnityPerMaterial)
     // GI
     half _IndirectDiffuseIntensity;
     half _IndirectSpecularIntensity;
-
-    // Overlay CubeMap
-    // half _OverlayCubeMapScale;
-    // half _OverlayCubeMapSmoothnessOffset;
-    // half _OverlayCubeMapRotate;
 
     // ScreenDoor
     half _ScreenDoorTransparency;

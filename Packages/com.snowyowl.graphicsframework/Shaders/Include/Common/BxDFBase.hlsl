@@ -24,7 +24,7 @@ inline void SwyoInitializeBxDFDataDirect(half3 albedo, half3 diffuse, half3 spec
     // i.e. we only alpha blend the diffuse part to background (transmittance).
 #if defined(_ALPHAPREMULTIPLY_ON)
     // TODO: would be clearer to multiply this once to accumulated diffuse lighting at end instead of the surface property.
-    outBxDFData.diffuse *= alpha;
+    outBxDFData.base.diffuse *= alpha;
 #endif
 }
 

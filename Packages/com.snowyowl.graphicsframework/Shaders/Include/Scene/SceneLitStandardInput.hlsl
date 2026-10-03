@@ -24,7 +24,6 @@ CBUFFER_START(UnityPerMaterial)
     half _EmissionScale;
 
     // GI
-    half _IndirectDiffuseIntensity;
     half _IndirectSpecularIntensity;
 
     // ScreenDoor
@@ -55,6 +54,6 @@ void SwyoInitializeSurfaceData(SwyoTextureData textureData, out SwyoSurfaceData 
     outSurfaceData.normalTS = GetNormalTS(textureData.normalMap, _NormalScale);
 
     outSurfaceData.directIntensity = 1.0;
-    outSurfaceData.indirectDiffuseIntensity = _IndirectDiffuseIntensity;
+    outSurfaceData.indirectDiffuseIntensity = 1.0;
     outSurfaceData.indirectSpecularIntensity = _IndirectSpecularIntensity;
 }

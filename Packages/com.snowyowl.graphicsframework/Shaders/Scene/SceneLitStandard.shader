@@ -45,7 +45,6 @@ Shader "SnowyOwl GraphicsFramework/Scene/Scene Lit Standard"
             [Toggle(_RECEIVE_SHADOWS_OFF)] _ReceiveShadowsOff("Disable Receive Shadows", float) = 0.0
 
         _GlobalIlluminationSetting("# Global Illumination", Float) = 0
-            _IndirectDiffuseIntensity("Indirect Diffuse Intensity", Range(0.0, 1.0)) = 1.0
 			_IndirectSpecularIntensity("Indirect Specular Intensity", Range(0.0, 1.0)) = 1.0
             [KeywordEnum(Environment, Cubemap, Matcap, None)] _Reflection("Reflection Source", Float) = 0.0
             _ReflectionCubeMap("Reflection CubeMap & [_REFLECTION_CUBEMAP]", CUBE) = "black" {}

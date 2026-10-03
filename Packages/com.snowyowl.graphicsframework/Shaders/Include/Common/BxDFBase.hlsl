@@ -3,7 +3,7 @@
 #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/BRDF.hlsl"
 #include "Packages/com.snowyowl.graphicsframework/Shaders/Include/Common/CommonUtils.hlsl"
 
-inline void SwyoInitializeBxDFDataDirect(half3 albedo, half3 diffuse, half3 specular, half reflectivity, half smoothness, half alpha, out SwyoBxDFData outBxDFData)
+inline void SwyoInitializeBxDFDataDirect(out SwyoBxDFData outBxDFData, half3 albedo, half3 diffuse, half3 specular, half reflectivity, half smoothness, half alpha)
 {
     outBxDFData = (SwyoBxDFData)0;
     outBxDFData.base.albedo = albedo;
@@ -29,14 +29,14 @@ inline void SwyoInitializeBxDFDataDirect(half3 albedo, half3 diffuse, half3 spec
 }
 
 // Initialize BxDFData
-inline void SwyoInitializeBxDFData(half3 albedo, half alpha, half metallic, half smoothness, out SwyoBxDFData outBxDFData)
+inline void SwyoInitializeBxDFData(out SwyoBxDFData outBxDFData, half3 albedo, half alpha, half metallic, half smoothness)
 {
     half oneMinusReflectivity = OneMinusReflectivityMetallic(metallic);
     half reflectivity = half(1.0) - oneMinusReflectivity;
     half3 bxdfDiffuse = albedo * oneMinusReflectivity;
     half3 bxdfSpecular = lerp(kDieletricSpec.rgb, albedo, metallic);
 
-    SwyoInitializeBxDFDataDirect(albedo, bxdfDiffuse, bxdfSpecular, reflectivity, smoothness, alpha, outBxDFData);
+    SwyoInitializeBxDFDataDirect(outBxDFData, albedo, bxdfDiffuse, bxdfSpecular, reflectivity, smoothness, alpha);
 }
 
 half3 SwyoEnvironmentBxDFSpecular(SwyoBxDFData bxdfData, half fresnelTerm)

@@ -41,7 +41,7 @@ float3 RotateAroundYInDegrees(float3 vertex, float degrees)
 
 // ------------------------------------------------
 // Common Functions
-void SwyoInitializeTextureData(float2 uv, out SwyoTextureData data)
+void SwyoInitializeTextureData(out SwyoTextureData data, float2 uv)
 {
     data = (SwyoTextureData)0;
     data.baseMap = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, uv);

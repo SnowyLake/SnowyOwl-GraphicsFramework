@@ -85,15 +85,16 @@ struct SwyoSurfaceData
     half alpha;
     half metallic;
     half smoothness;
-    half specular;
     half occlusion;
     half3 emission;
     half3 normalTS;
+};
 
-    // Lighting Intensity
-    half directIntensity;
-    half indirectDiffuseIntensity;
-    half indirectSpecularIntensity;
+struct SwyoLightingData
+{
+    half primarySpecularScale;
+    half indirectDiffuseScale;
+    half indirectSpecularScale;
 };
 
 
@@ -129,7 +130,7 @@ struct SwyoAdditionalData
 
 // Fallback for the standard or simple shader which doesn't use additional data
 #if defined(NOT_USE_ADDITIONAL_DATA)
-    #define SwyoInitializeAdditionalData(p0, p1, p2, p3, p4, data) data = (SwyoAdditionalData)0
+    #define SwyoInitializeAdditionalData(data, p0, p1, p2, p3, p4) data = (SwyoAdditionalData)0
 #endif
 
 struct SwyoBxDFData

@@ -34,7 +34,7 @@ CBUFFER_END
 
 // -------------------------------------
 // Initialize Function
-void SwyoInitializeSurfaceData(SwyoTextureData textureData, out SwyoSurfaceData outSurfaceData)
+void SwyoInitializeSurfaceData(out SwyoSurfaceData outSurfaceData, SwyoTextureData textureData)
 {
     outSurfaceData = (SwyoSurfaceData)0;
     
@@ -47,13 +47,17 @@ void SwyoInitializeSurfaceData(SwyoTextureData textureData, out SwyoSurfaceData 
 #endif
     outSurfaceData.metallic = saturate(lightingMask.r * _Metallic);
     outSurfaceData.smoothness = saturate(lightingMask.g * _Smoothness); 
-    outSurfaceData.specular = _Specular;
     outSurfaceData.occlusion = LerpWhiteTo(lightingMask.b, _Occlusion);
     outSurfaceData.emission = outSurfaceData.albedo * _EmissionColor.rgb * _EmissionScale * lightingMask.a;
     
     outSurfaceData.normalTS = GetNormalTS(textureData.normalMap, _NormalScale);
+}
 
-    outSurfaceData.directIntensity = 1.0;
-    outSurfaceData.indirectDiffuseIntensity = 1.0;
-    outSurfaceData.indirectSpecularIntensity = _IndirectSpecularIntensity;
+void SwyoInitializeLightingData(out SwyoLightingData outLightingData, SwyoTextureData textureData)
+{
+    outLightingData = (SwyoLightingData)0;
+
+    outLightingData.primarySpecularScale = _Specular;
+    outLightingData.indirectDiffuseScale = 1.0;
+    outLightingData.indirectSpecularScale = _IndirectSpecularIntensity;
 }

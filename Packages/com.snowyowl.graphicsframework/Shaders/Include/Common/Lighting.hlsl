@@ -96,8 +96,8 @@ half3 GetLightingResultColor(SwyoLightingResult result)
     return color;
 }
 
-SwyoLightingAccumulator SwyoLighting(SwyoInputData inputData, SwyoSurfaceData surfaceData, SwyoAdditionalData additionalData, SwyoBxDFData bxdfData, SwyoLightContext mainLightCtx,
-                                     out SwyoLightingResult outMainLightingResult)
+SwyoLightingAccumulator SwyoLighting(SwyoLightContext mainLightCtx, SwyoInputData inputData, SwyoSurfaceData surfaceData, SwyoBxDFData bxdfData, SwyoLightingData lightingData,
+                                     SwyoAdditionalData additionalData, out SwyoLightingResult outMainLightingResult)
 {
     SwyoLightingAccumulator lightAccumulator = (SwyoLightingAccumulator)0;
     outMainLightingResult = (SwyoLightingResult)0;
@@ -105,17 +105,16 @@ SwyoLightingAccumulator SwyoLighting(SwyoInputData inputData, SwyoSurfaceData su
     uint meshRenderingLayers = GetMeshRenderingLayer();
     
     lightAccumulator.emission = surfaceData.emission;
-    lightAccumulator.indirect = SwyoGlobalIllumination(bxdfData, inputData.bakedGI, surfaceData.occlusion, inputData.fresnel, inputData.positionWS, inputData.normalWS, inputData.viewDirectionWS,
-                                                       inputData.normalizedScreenSpaceUV, inputData.mainUV.zw, surfaceData.indirectDiffuseIntensity, surfaceData.indirectSpecularIntensity);
+    lightAccumulator.indirect = SwyoGlobalIllumination(bxdfData, lightingData, inputData.bakedGI, surfaceData.occlusion, inputData.fresnel, inputData.positionWS, inputData.normalWS,
+                                                       inputData.viewDirectionWS, inputData.normalizedScreenSpaceUV, inputData.mainUV.zw);
 
 #if defined(_LIGHT_LAYERS)
     if (IsMatchingLightLayer(mainLightCtx.light.layerMask, meshRenderingLayers))
 #endif
     {
-        outMainLightingResult = SwyoIntegrateBxDF(mainLightCtx, inputData, surfaceData, additionalData, bxdfData);
+        outMainLightingResult = SwyoIntegrateBxDF(mainLightCtx, inputData, surfaceData, bxdfData, lightingData, additionalData);
         lightAccumulator.directMainLight += GetLightingResultColor(outMainLightingResult);
     }
-    // Modify indirect
 
 #if defined(_ADDITIONAL_LIGHTS)
     uint pixelLightCount = GetAdditionalLightsCount();
@@ -132,7 +131,7 @@ SwyoLightingAccumulator SwyoLighting(SwyoInputData inputData, SwyoSurfaceData su
         #endif
             {
                 SwyoLightContext lightCtx = CreateLightContext(light, inputData, 0);
-                SwyoLightingResult lightingResult = SwyoIntegrateBxDF(lightCtx, inputData, surfaceData, additionalData, bxdfData);
+                SwyoLightingResult lightingResult = SwyoIntegrateBxDF(lightCtx, inputData, surfaceData, bxdfData, lightingData, additionalData);
                 lightAccumulator.directAdditionalLight += GetLightingResultColor(lightingResult);
             }
         }
@@ -146,15 +145,12 @@ SwyoLightingAccumulator SwyoLighting(SwyoInputData inputData, SwyoSurfaceData su
     #endif
         {
             SwyoLightContext lightCtx = CreateLightContext(light, inputData, 0);
-            SwyoLightingResult lightingResult = SwyoIntegrateBxDF(lightCtx, inputData, surfaceData, additionalData, bxdfData);
+            SwyoLightingResult lightingResult = SwyoIntegrateBxDF(lightCtx, inputData, surfaceData, bxdfData, lightingData, additionalData);
             lightAccumulator.directAdditionalLight += GetLightingResultColor(lightingResult);
         }
     LIGHT_LOOP_END
 #endif
     
-    lightAccumulator.directMainLight *= surfaceData.directIntensity;
-    lightAccumulator.directAdditionalLight *= surfaceData.directIntensity;
-
     return lightAccumulator;
 }
 

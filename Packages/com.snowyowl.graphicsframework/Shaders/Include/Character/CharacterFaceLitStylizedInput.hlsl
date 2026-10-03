@@ -50,7 +50,7 @@ CBUFFER_END
 
 // -------------------------------------
 // Initialize Function
-void SwyoInitializeSurfaceData(SwyoTextureData textureData, out SwyoSurfaceData outSurfaceData)
+void SwyoInitializeSurfaceData(out SwyoSurfaceData outSurfaceData, SwyoTextureData textureData)
 {
     outSurfaceData = (SwyoSurfaceData)0;
     
@@ -63,17 +63,21 @@ void SwyoInitializeSurfaceData(SwyoTextureData textureData, out SwyoSurfaceData 
 #endif
     outSurfaceData.metallic = _Metallic;
     outSurfaceData.smoothness = saturate(lightingMask.g * _Smoothness); 
-    outSurfaceData.specular = _Specular;
     outSurfaceData.occlusion = _Occlusion;
     outSurfaceData.emission = lightingMask.a * _EmissionScale * _EmissionColor.rgb;
     outSurfaceData.normalTS = GetNormalTS(textureData.normalMap, _NormalScale);
-
-    outSurfaceData.directIntensity = _CharacterDirectIntensity;
-    outSurfaceData.indirectDiffuseIntensity = _CharacterIndirectIntensity;
-    outSurfaceData.indirectSpecularIntensity = 0.0;
 }
 
-void SwyoInitializeAdditionalData(float4 uv, SwyoInputData inputData, SwyoTextureData textureData, SwyoSurfaceData surfaceData, SwyoLightContext mainLightCtx, out SwyoAdditionalData outAdditionalData)
+void SwyoInitializeLightingData(out SwyoLightingData outLightingData, SwyoTextureData textureData)
+{
+    outLightingData = (SwyoLightingData)0;
+
+    outLightingData.primarySpecularScale = _Specular;
+    outLightingData.indirectDiffuseScale = _CharacterIndirectIntensity;
+    outLightingData.indirectSpecularScale = 0.0;
+}
+
+void SwyoInitializeAdditionalData(out SwyoAdditionalData outAdditionalData, SwyoLightContext mainLightCtx, SwyoInputData inputData, SwyoSurfaceData surfaceData, SwyoTextureData textureData, float4 uv)
 {
     outAdditionalData = (SwyoAdditionalData)0;
     

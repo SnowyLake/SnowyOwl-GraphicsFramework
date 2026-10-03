@@ -4,7 +4,7 @@
 #include "Packages/com.snowyowl.graphicsframework/Shaders/Include/Common/BxDFBase.hlsl"
 
 #if defined(SWYO_BXDF_STANDARD)
-SwyoLightingResult SwyoBxDFStandard(SwyoLightContext lightCtx, SwyoInputData inputData, SwyoSurfaceData surfaceData, SwyoBxDFData bxdfData)
+SwyoLightingResult SwyoBxDFStandard(SwyoLightContext lightCtx, SwyoInputData inputData, SwyoSurfaceData surfaceData, SwyoBxDFData bxdfData, SwyoLightingData lightingData)
 {
     SwyoLightingResult result = (SwyoLightingResult)0;
 
@@ -12,7 +12,7 @@ SwyoLightingResult SwyoBxDFStandard(SwyoLightContext lightCtx, SwyoInputData inp
     result.diffuseColor = result.diffuse * bxdfData.base.diffuse * lightCtx.light.color;
     
 #if !defined(_SPECULARHIGHLIGHTS_OFF)
-    result.specular = SwyoBxDFStandardSpecular(lightCtx, bxdfData, surfaceData.specular) * result.diffuse;
+    result.specular = SwyoBxDFStandardSpecular(lightCtx, bxdfData, lightingData.primarySpecularScale) * result.diffuse;
     result.specularColor = result.specular * bxdfData.base.specular * lightCtx.light.color;
 #endif
     
@@ -21,7 +21,7 @@ SwyoLightingResult SwyoBxDFStandard(SwyoLightContext lightCtx, SwyoInputData inp
 #endif
 
 #if defined(SWYO_BXDF_SIMPLE)
-SwyoLightingResult SwyoBxDFSimple(SwyoLightContext lightCtx, SwyoInputData inputData, SwyoSurfaceData surfaceData, SwyoBxDFData bxdfData)
+SwyoLightingResult SwyoBxDFSimple(SwyoLightContext lightCtx, SwyoInputData inputData, SwyoSurfaceData surfaceData, SwyoBxDFData bxdfData, SwyoLightingData lightingData)
 {
     SwyoLightingResult result = (SwyoLightingResult)0;
     return result;
@@ -29,7 +29,8 @@ SwyoLightingResult SwyoBxDFSimple(SwyoLightContext lightCtx, SwyoInputData input
 #endif
 
 #if defined(SWYO_BXDF_STYLIZED)
-SwyoLightingResult SwyoBxDFStylized(SwyoLightContext lightCtx, SwyoInputData inputData, SwyoSurfaceData surfaceData, SwyoAdditionalData additionalData, SwyoBxDFData bxdfData)
+SwyoLightingResult SwyoBxDFStylized(SwyoLightContext lightCtx, SwyoInputData inputData, SwyoSurfaceData surfaceData, SwyoBxDFData bxdfData, SwyoLightingData lightingData,
+                                    SwyoAdditionalData additionalData)
 {
     SwyoLightingResult result = (SwyoLightingResult)0;
 
@@ -37,7 +38,7 @@ SwyoLightingResult SwyoBxDFStylized(SwyoLightContext lightCtx, SwyoInputData inp
     result.diffuseColor = SwyoBxDFStylizedDiffuseColor(lightCtx, bxdfData, result.diffuse, additionalData.shadowScale, additionalData.shadowColor);
 
 #if !defined(_SPECULARHIGHLIGHTS_OFF)
-    result.specular = SwyoBxDFStylizedSpecular(lightCtx, bxdfData, surfaceData.specular) * result.diffuse;
+    result.specular = SwyoBxDFStylizedSpecular(lightCtx, bxdfData, lightingData.primarySpecularScale) * result.diffuse;
     result.specularColor = SwyoBxDFStylizedSpecularColor(lightCtx, bxdfData, result.specular, additionalData.specularColor);
 #endif    
     return result;
@@ -45,7 +46,8 @@ SwyoLightingResult SwyoBxDFStylized(SwyoLightContext lightCtx, SwyoInputData inp
 #endif
 
 #if defined(SWYO_BXDF_COMPLEX_CLEARCOAT)
-SwyoLightingResult SwyoBxDFComplexClearCoat(SwyoLightContext lightCtx, SwyoInputData inputData, SwyoSurfaceData surfaceData, SwyoAdditionalData additionalData, SwyoBxDFData bxdfData)
+SwyoLightingResult SwyoBxDFComplexClearCoat(SwyoLightContext lightCtx, SwyoInputData inputData, SwyoSurfaceData surfaceData, SwyoBxDFData bxdfData, SwyoLightingData lightingData,
+                                            SwyoAdditionalData additionalData)
 {
     SwyoLightingResult result = (SwyoLightingResult)0;
     return result;
@@ -53,7 +55,8 @@ SwyoLightingResult SwyoBxDFComplexClearCoat(SwyoLightContext lightCtx, SwyoInput
 #endif
 
 #if defined(SWYO_BXDF_COMPLEX_SUBSURFACE)
-SwyoLightingResult SwyoBxDFComplexSubsurface(SwyoLightContext lightCtx, SwyoInputData inputData, SwyoSurfaceData surfaceData, SwyoAdditionalData additionalData, SwyoBxDFData bxdfData)
+SwyoLightingResult SwyoBxDFComplexSubsurface(SwyoLightContext lightCtx, SwyoInputData inputData, SwyoSurfaceData surfaceData, SwyoBxDFData bxdfData, SwyoLightingData lightingData,
+                                             SwyoAdditionalData additionalData)
 {
     SwyoLightingResult result = (SwyoLightingResult)0;
     return result;
@@ -61,18 +64,19 @@ SwyoLightingResult SwyoBxDFComplexSubsurface(SwyoLightContext lightCtx, SwyoInpu
 #endif
 
 
-SwyoLightingResult SwyoIntegrateBxDF(SwyoLightContext lightCtx, SwyoInputData inputData, SwyoSurfaceData surfaceData, SwyoAdditionalData additionalData, SwyoBxDFData bxdfData)
+SwyoLightingResult SwyoIntegrateBxDF(SwyoLightContext lightCtx, SwyoInputData inputData, SwyoSurfaceData surfaceData, SwyoBxDFData bxdfData, SwyoLightingData lightingData,
+                                     SwyoAdditionalData additionalData)
 {
 #if defined(SWYO_BXDF_STANDARD)
-    return SwyoBxDFStandard(lightCtx, inputData, surfaceData, bxdfData);
+    return SwyoBxDFStandard(lightCtx, inputData, surfaceData, bxdfData, lightingData);
 #elif defined(SWYO_BXDF_SIMPLE)
-    return SwyoBxDFSimple(lightCtx, inputData, surfaceData, additionalData, bxdfData);
+    return SwyoBxDFSimple(lightCtx, inputData, surfaceData, bxdfData, lightingData);
 #elif defined(SWYO_BXDF_STYLIZED)
-    return SwyoBxDFStylized(lightCtx, inputData, surfaceData, additionalData, bxdfData);
+    return SwyoBxDFStylized(lightCtx, inputData, surfaceData, bxdfData, lightingData, additionalData);
 #elif defined(SWYO_BXDF_COMPLEX_CLEARCOAT)
-    return SwyoBxDFComplexClearCoat(lightCtx, inputData, surfaceData, additionalData, bxdfData);
+    return SwyoBxDFComplexClearCoat(lightCtx, inputData, surfaceData, bxdfData, lightingData, additionalData);
 #elif defined(SWYO_BXDF_COMPLEX_SUBSURFACE)
-    return SwyoBxDFComplexSubsurface(lightCtx, inputData, surfaceData, additionalData, bxdfData);
+    return SwyoBxDFComplexSubsurface(lightCtx, inputData, surfaceData, bxdfData, lightingData, additionalData);
 #endif
 }
 

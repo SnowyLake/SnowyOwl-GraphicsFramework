@@ -19,7 +19,7 @@ struct SwyoGBufferOutput
 #endif
 };
 
-FragmentOutput SwyoSurfaceDataToGbuffer(SwyoSurfaceData surfaceData, SwyoInputData inputData, half3 giAndEmission)
+FragmentOutput SwyoSurfaceDataToGbuffer(SwyoInputData inputData, SwyoSurfaceData surfaceData, half3 giAndEmission)
 {
     FragmentOutput output = (FragmentOutput)0;
 

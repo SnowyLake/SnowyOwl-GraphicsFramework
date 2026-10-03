@@ -40,7 +40,7 @@ struct ForwardLitVaryings
 
 // -------------------------------------
 // Functions
-void SwyoInitializeInputData(ForwardLitVaryings input, half3 normalTS, out SwyoInputData outInputData)
+void SwyoInitializeInputData(out SwyoInputData outInputData, ForwardLitVaryings input, half3 normalTS)
 {
     outInputData = (SwyoInputData)0;
     
@@ -120,13 +120,15 @@ half4 ForwardLitFragment(ForwardLitVaryings input) : SV_Target0
     SwyoInputData inputData;
     SwyoTextureData textureData;
     SwyoSurfaceData surfaceData;
+    SwyoLightingData lightingData;
     SwyoAdditionalData additionalData;
     SwyoBxDFData bxdfData;
 
-    SwyoInitializeTextureData(input.uv0.xy, textureData);
-    SwyoInitializeSurfaceData(textureData, surfaceData);
+    SwyoInitializeTextureData(textureData, input.uv0.xy);
+    SwyoInitializeSurfaceData(surfaceData, textureData);
+    SwyoInitializeLightingData(lightingData, textureData);
     
-    SwyoInitializeInputData(input, surfaceData.normalTS, inputData);
+    SwyoInitializeInputData(inputData, input, surfaceData.normalTS);
    
 #if defined(_DYNAMIC_FEATURE_ON)
     #if defined(_SCREEN_DOOR_ON) && !defined(ALPHATEST_OFF)
@@ -144,18 +146,18 @@ half4 ForwardLitFragment(ForwardLitVaryings input) : SV_Target0
 
     SwyoLightContext mainLightCtx = GetMainLightContext(inputData);
     
-    SwyoInitializeAdditionalData(input.uv0, inputData, textureData, surfaceData, mainLightCtx, additionalData);
-    SwyoInitializeBxDFData(surfaceData.albedo, surfaceData.alpha, surfaceData.metallic, surfaceData.smoothness, bxdfData);
+    SwyoInitializeAdditionalData(additionalData, mainLightCtx, inputData, surfaceData, textureData, input.uv0);
+    SwyoInitializeBxDFData(bxdfData, surfaceData.albedo, surfaceData.alpha, surfaceData.metallic, surfaceData.smoothness);
     
     SwyoLightingResult mainLightingResult = (SwyoLightingResult)0;
-    SwyoLightingAccumulator lightAccumulator = SwyoLighting(inputData, surfaceData, additionalData, bxdfData, mainLightCtx, mainLightingResult);
+    SwyoLightingAccumulator lightAccumulator = SwyoLighting(mainLightCtx, inputData, surfaceData, bxdfData, lightingData, additionalData, mainLightingResult);
     
     outputColor.rgb = AccumulateLighting(lightAccumulator);
     outputColor.a = 1.0f;
 
 #if defined(_OVERLAY_CUBEMAP_ON)
     outputColor.rgb += SampleOverlayCubeMap(TEXTURECUBE_ARGS(_OverlayCubeMap, sampler_OverlayCubeMap), _OverlayCubeMap_HDR, _OverlayCubeMapTintColor.rgb, inputData.viewDirectionWS, inputData.normalWS,
-                                          surfaceData.smoothness, _OverlayCubeMapScale, _OverlayCubeMapSmoothnessOffset, _OverlayCubeMapRotate);
+                                            surfaceData.smoothness, _OverlayCubeMapScale, _OverlayCubeMapSmoothnessOffset, _OverlayCubeMapRotate);
 #endif
 
 #if defined(_MATCAP_ON)
@@ -203,22 +205,24 @@ FragmentOutput GBufferFragment(ForwardLitVaryings input)
     SwyoInputData inputData;
     SwyoTextureData textureData;
     SwyoSurfaceData surfaceData;
+    SwyoLightingData lightingData;
     SwyoAdditionalData additionalData;
     SwyoBxDFData bxdfData;
 
-    SwyoInitializeTextureData(input.uv0.xy, textureData);
-    SwyoInitializeSurfaceData(textureData, surfaceData);
+    SwyoInitializeTextureData(textureData, input.uv0.xy);
+    SwyoInitializeSurfaceData(surfaceData, textureData);
+    SwyoInitializeLightingData(lightingData, textureData);
     
-    SwyoInitializeInputData(input, surfaceData.normalTS, inputData);
+    SwyoInitializeInputData(inputData, input, surfaceData.normalTS);
 
     SwyoLightContext mainLightCtx = GetMainLightContext(inputData);
     
-    SwyoInitializeAdditionalData(input.uv0, inputData, textureData, surfaceData, mainLightCtx, additionalData);
-    SwyoInitializeBxDFData(surfaceData.albedo, surfaceData.alpha, surfaceData.metallic, surfaceData.smoothness, bxdfData);
+    SwyoInitializeAdditionalData(additionalData, mainLightCtx, inputData, surfaceData, textureData, input.uv0);
+    SwyoInitializeBxDFData(bxdfData, surfaceData.albedo, surfaceData.alpha, surfaceData.metallic, surfaceData.smoothness);
     
-    half3 gi = SwyoGlobalIllumination(bxdfData, inputData.bakedGI, surfaceData.occlusion, inputData.fresnel, inputData.positionWS, inputData.normalWS, inputData.viewDirectionWS,
-                                      inputData.normalizedScreenSpaceUV, inputData.mainUV.zw, surfaceData.indirectDiffuseIntensity, surfaceData.indirectSpecularIntensity);
+    half3 gi = SwyoGlobalIllumination(bxdfData, lightingData, inputData.bakedGI, surfaceData.occlusion, inputData.fresnel, inputData.positionWS, inputData.normalWS, inputData.viewDirectionWS,
+                                    inputData.normalizedScreenSpaceUV, inputData.mainUV.zw);
     half3 giAndEmission = gi + surfaceData.emission;
     
-    return SwyoSurfaceDataToGbuffer(surfaceData, inputData, giAndEmission);
+    return SwyoSurfaceDataToGbuffer(inputData, surfaceData, giAndEmission);
 }
